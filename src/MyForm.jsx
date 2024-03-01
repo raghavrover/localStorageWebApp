@@ -70,7 +70,7 @@ const MyForm = () => {
     localStorage.setItem("formArray", JSON.stringify(newArray));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // const fieldValues = Object.values(formData);
@@ -89,6 +89,27 @@ const MyForm = () => {
 
       // Combine form data into an object along with an id which is the date-time
       const newFormData = { ...formData, id: new Date().toISOString() };
+
+      //Insert Your API request here
+      const URL = import.meta.env.API_URL;
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      };
+
+      try {
+        const response = await fetch(URL, options);
+        if (response.ok) {
+          console.log("Form data sent successfully.");
+        } else {
+          console.error("Failed to send form data.");
+        }
+      } catch (error) {
+        console.error("Error sending form data:", error);
+      }
 
       // Add the new object at the beginning of the array using unshift
       const newArray = [newFormData, ...formArray];
