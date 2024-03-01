@@ -26,6 +26,7 @@ const MyForm = () => {
     }));
   };
 
+  //remove all elements in the local storage
   const removeFromLocalStorage = () => {
     setFormArray([]);
     localStorage.clear("formArray");
@@ -50,6 +51,16 @@ const MyForm = () => {
     };
   }, []); // Empty dependency array to ensure the effect runs only once
 
+  // delete an item from the array
+  const handleDelete = (id) => {
+    // Filter out the item with the specified id
+    const newArray = formArray.filter((item) => item.id !== id);
+
+    // Update state and local storage
+    setFormArray(newArray);
+    localStorage.setItem("formArray", JSON.stringify(newArray));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -67,8 +78,8 @@ const MyForm = () => {
     if (areAllFieldsFilled) {
       // All fields are filled, proceed with form submission logic
 
-      // Combine form data into an object
-      const newFormData = { ...formData };
+      // Combine form data into an object along with an id which is the date-time
+      const newFormData = { ...formData, id: new Date().toISOString() };
 
       // Add the new object at the beginning of the array using unshift
       const newArray = [newFormData, ...formArray];
@@ -226,8 +237,8 @@ const MyForm = () => {
       </form>
       {/* Second Column */}
       <div className="h-full">
-        <div className="flex justify-between">
-          <p className="my-2">Total tenants: {formArray.length}</p>
+        <div className="flex justify-start">
+          <p className="my-2 mr-10">Total tenants: {formArray.length}</p>
 
           <button
             className="py-2 px-3 m-2 mr-6 bg-slate-600 text-red-300 rounded-md"
@@ -245,16 +256,27 @@ const MyForm = () => {
             </p>
           )}
           {formArray.map((data, index) => (
-            <li
-              key={index}
-              className="grid grid-cols-2 border rounded px-4 py-2 mb-2"
-            >
-              {Object.entries(data).map(([field, value]) => (
-                <div key={field} className="flex mb-1">
-                  <span className="font-medium mr-2">{field}:</span>
-                  <span>{value}</span>
-                </div>
-              ))}
+            <li key={index} className="flex border rounded px-4 py-2 mb-2">
+              <div className="w-[92%] grid grid-cols-2">
+                {Object.entries(data).map(([field, value]) => (
+                  <div
+                    key={field}
+                    className={`flex mb-1 ${field === "id" ? "hidden" : ""}`}
+                  >
+                    <span className="font-medium text-sm mr-2">{field}:</span>
+                    <span className="text-sm">{value}</span>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <button
+                  className=" px-2 py-1 text-xs rounded bg-red-400 "
+                  type="button"
+                  onClick={() => handleDelete(data.id)}
+                >
+                  remove
+                </button>
+              </div>
             </li>
           ))}
         </ul>
