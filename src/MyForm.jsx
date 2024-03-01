@@ -10,6 +10,7 @@ const MyForm = () => {
     tenant_status: "Active",
     security_deposit_amount: "2000",
     security_deposit_status: "Paid",
+    rent_amount: "",
   });
 
   const [formArray, setFormArray] = useState(() => {
@@ -20,6 +21,14 @@ const MyForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "mobile_number" && value.length > 10) {
+      alert("Please enter a valid phone number");
+      return;
+    }
+    if (name === "aadhaar" && value.length > 12) {
+      alert("Please enter a valid aadhaar number");
+      return;
+    }
     setFormData((prevData) => ({
       ...prevData,
       [name]: value.trim(),
@@ -98,6 +107,7 @@ const MyForm = () => {
         tenant_status: "Active",
         security_deposit_amount: "2000",
         security_deposit_status: "Paid",
+        rent_amount: "",
       });
     } else {
       // Fields are not filled, display an error message or take appropriate action
@@ -226,6 +236,21 @@ const MyForm = () => {
             </select>
           </div>
         </div>
+        {/* Fifth Row */}
+        <div className="grid grid-cols-2 mb-2 gap-6">
+          <div className="mb-4">
+            <label className="block text-sm mb-2">Rent Amount:</label>
+            <input
+              type="number"
+              name="rent_amount"
+              value={formData.rent_amount}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-400 rounded"
+              placeholder="Enter Rent Amount"
+            />
+          </div>
+        </div>
+        {/* Submit  Button */}
         <div className="text-center">
           <button
             className="py-3 px-6 bg-slate-600 text-yellow-100 rounded-md"
