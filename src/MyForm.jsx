@@ -100,16 +100,16 @@ const MyForm = () => {
         body: JSON.stringify(formData),
       };
 
-      try {
-        const response = await fetch(URL, options);
-        if (response.ok) {
-          console.log("Form data sent successfully.");
-        } else {
-          console.error("Failed to send form data.");
-        }
-      } catch (error) {
-        console.error("Error sending form data:", error);
-      }
+      // try {
+      //   const response = await fetch(URL, options);
+      //   if (response.ok) {
+      //     console.log("Form data sent successfully.");
+      //   } else {
+      //     console.error("Failed to send form data.");
+      //   }
+      // } catch (error) {
+      //   console.error("Error sending form data:", error);
+      // }
 
       // Add the new object at the beginning of the array using unshift
       const newArray = [newFormData, ...formArray];
